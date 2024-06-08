@@ -1,3 +1,4 @@
+import 'package:expense_tracker/utils/appvalidator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -6,48 +7,15 @@ class SignUpView extends StatelessWidget {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  void _submitForm(BuildContext context) {
+  Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
+      ScaffoldMessenger.of(_formKey.currentContext!).showSnackBar(
         const SnackBar(content: Text('Form Submitted successfully')),
       );
     }
   }
 
-  String? _validateEmail(value) {
-    if (value!.isEmpty) {
-      return 'Please enter an email';
-    }
-    RegExp emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-    if (!emailRegExp.hasMatch(value)) {
-      return 'Please enter a valid email';
-    }
-    return null;
-  }
-
-  String? _validatePhoneNumber(value) {
-    if (value!.isEmpty) {
-      return 'Please enter a phone number';
-    }
-    if (value.length != 9) {
-      return 'Please enter a 9-digit phone number';
-    }
-    return null;
-  }
-
-  String? _validatePassword(value) {
-    if (value!.isEmpty) {
-      return 'Please enter a password';
-    }
-    return null;
-  }
-
-  String? _validateUserName(value) {
-    if (value!.isEmpty) {
-      return 'Please enter a username';
-    }
-    return null;
-  }
+  var appValidator = AppValidator();
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +45,7 @@ class SignUpView extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: _buildInputDecoration('Username', Icons.person),
-                validator: _validateUserName,
+                validator: appValidator.validateUserName,
               ),
               SizedBox(height: 16.0),
               TextFormField(
@@ -85,7 +53,7 @@ class SignUpView extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: _buildInputDecoration('Email', Icons.email),
-                validator: _validateEmail,
+                validator: appValidator.validateEmail,
               ),
               SizedBox(height: 16.0),
               TextFormField(
@@ -93,7 +61,7 @@ class SignUpView extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: _buildInputDecoration('Phone number', Icons.call),
-                validator: _validatePhoneNumber,
+                validator: appValidator.validatePhoneNumber,
               ),
               SizedBox(height: 16.0),
               TextFormField(
@@ -102,7 +70,7 @@ class SignUpView extends StatelessWidget {
                 style: TextStyle(color: Colors.white),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: _buildInputDecoration('Password', Icons.lock),
-                validator: _validatePassword,
+                validator: appValidator.validatePassword,
               ),
               SizedBox(height: 40.0),
               SizedBox(
@@ -112,7 +80,7 @@ class SignUpView extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 241, 89, 0),
                   ),
-                  onPressed: () => _submitForm(context),
+                  onPressed: () => _submitForm,
                   child: Text('Create'),
                 ),
               ),

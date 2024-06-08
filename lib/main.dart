@@ -1,4 +1,4 @@
-import 'package:expense_tracker/sing_up.dart';
+import 'package:expense_tracker/screens/sing_up.dart';
 import 'package:flutter/material.dart';
 
 void main() {
