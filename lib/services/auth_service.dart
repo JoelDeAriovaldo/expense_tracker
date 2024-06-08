@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class AuthService {
   createUser(data, context) async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: data['email'], password: data['password']);
     } catch (e) {
       showDialog(
