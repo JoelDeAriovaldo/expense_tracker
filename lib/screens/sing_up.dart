@@ -1,3 +1,4 @@
+import 'package:expense_tracker/screens/login_screen.dart';
 import 'package:expense_tracker/utils/appvalidator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -86,7 +87,12 @@ class SignUpView extends StatelessWidget {
               ),
               SizedBox(height: 20.0),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginView()),
+                  );
+                },
                 child: Text(
                   'Login',
                   style: TextStyle(color: Color(0xFFF15900), fontSize: 20),
