@@ -1,18 +1,47 @@
 import 'package:expense_tracker/screens/login_screen.dart';
+import 'package:expense_tracker/services/auth_service.dart';
 import 'package:expense_tracker/utils/appvalidator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class SignUpView extends StatelessWidget {
+class SignUpView extends StatefulWidget {
   SignUpView({super.key});
 
+  @override
+  State<SignUpView> createState() => _SignUpViewState();
+}
+
+class _SignUpViewState extends State<SignUpView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _userNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _phoneController = TextEditingController();
+
+  var authservice = AuthService();
+  var isLoader = false;
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(_formKey.currentContext!).showSnackBar(
-        const SnackBar(content: Text('Form Submitted successfully')),
-      );
+      setState(() {
+        isLoader = true;
+      });
+
+      var data = {
+        'Username': _userNameController.text,
+        'email': _emailController.text,
+        'password': _passwordController.text,
+        'phone': _phoneController.text
+      };
+
+      await authservice.createUser(data, context);
+      setState(() {
+        isLoader = false;
+      });
+
+      // ScaffoldMessenger.of(_formKey.currentContext!).showSnackBar(
+      //   const SnackBar(content: Text('Form Submitted successfully')),
+      // );
     }
   }
 
@@ -43,6 +72,7 @@ class SignUpView extends StatelessWidget {
               ),
               SizedBox(height: 50.0),
               TextFormField(
+                controller: _userNameController,
                 style: TextStyle(color: Colors.white),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: _buildInputDecoration('Username', Icons.person),
@@ -50,6 +80,7 @@ class SignUpView extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               TextFormField(
+                controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 style: TextStyle(color: Colors.white),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -58,6 +89,7 @@ class SignUpView extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               TextFormField(
+                controller: _phoneController,
                 keyboardType: TextInputType.phone,
                 style: TextStyle(color: Colors.white),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -66,6 +98,7 @@ class SignUpView extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               TextFormField(
+                controller: _passwordController,
                 keyboardType: TextInputType.text,
                 obscureText: true,
                 style: TextStyle(color: Colors.white),
@@ -81,8 +114,10 @@ class SignUpView extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 241, 89, 0),
                   ),
-                  onPressed: () => _submitForm,
-                  child: Text('Create'),
+                  onPressed: isLoader ? null : _submitForm,
+                  child: isLoader
+                      ? Center(child: CircularProgressIndicator())
+                      : Text('Create'),
                 ),
               ),
               SizedBox(height: 20.0),

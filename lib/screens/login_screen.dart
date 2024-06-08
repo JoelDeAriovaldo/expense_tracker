@@ -1,17 +1,42 @@
 import 'package:expense_tracker/screens/sing_up.dart';
 import 'package:expense_tracker/utils/appvalidator.dart';
+import 'package:expense_tracker/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
   LoginView({super.key});
 
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  var authservice = AuthService();
+  var isLoader = false;
 
   Future<void> _submitForm() async {
     if (_formKey.currentState!.validate()) {
-      ScaffoldMessenger.of(_formKey.currentContext!).showSnackBar(
-        const SnackBar(content: Text('Form Submitted successfully')),
-      );
+      setState(() {
+        isLoader = true;
+      });
+
+      var data = {
+        'email': _emailController.text,
+        'password': _passwordController.text,
+      };
+
+      await authservice.login(data, context);
+      setState(() {
+        isLoader = false;
+      });
+
+      // ScaffoldMessenger.of(_formKey.currentContext!).showSnackBar(
+      //   const SnackBar(content: Text('Form Submitted successfully')),
+      // );
     }
   }
 
@@ -42,6 +67,7 @@ class LoginView extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               TextFormField(
+                controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 style: TextStyle(color: Colors.white),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -50,6 +76,7 @@ class LoginView extends StatelessWidget {
               ),
               SizedBox(height: 16.0),
               TextFormField(
+                controller: _passwordController,
                 keyboardType: TextInputType.text,
                 obscureText: true,
                 style: TextStyle(color: Colors.white),
@@ -65,8 +92,10 @@ class LoginView extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromARGB(255, 241, 89, 0),
                   ),
-                  onPressed: () => _submitForm,
-                  child: Text('Create'),
+                  onPressed: isLoader ? null : _submitForm,
+                  child: isLoader
+                      ? Center(child: CircularProgressIndicator())
+                      : Text('Login'),
                 ),
               ),
               SizedBox(height: 20.0),
