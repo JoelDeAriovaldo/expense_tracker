@@ -1,3 +1,4 @@
+import 'package:expense_tracker/screens/dashboard.dart';
 import 'package:expense_tracker/screens/login_screen.dart';
 import 'package:expense_tracker/services/auth_service.dart';
 import 'package:expense_tracker/utils/appvalidator.dart';
