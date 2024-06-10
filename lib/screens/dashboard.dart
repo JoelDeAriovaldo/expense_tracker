@@ -39,17 +39,6 @@ class _DashboardState extends State<Dashboard> {
           });
         },
       ),
-      appBar: AppBar(
-        actions: [
-          IconButton(
-              onPressed: () {
-                logOut();
-              },
-              icon: isLogoutLoading
-                  ? CircularProgressIndicator()
-                  : Icon(Icons.exit_to_app))
-        ],
-      ),
       body: pageViewList[currentIndex],
     );
   }

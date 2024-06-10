@@ -1,12 +1,107 @@
+import 'package:expense_tracker/screens/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+//ignore_for_file: prefer_const_constructors
+//ignore_for_file: prefer_const_literals_to_create_immutables
+
+class HomeScreen extends StatefulWidget {
+  HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  var isLogoutLoading = false;
+  int currentIndex = 0;
+
+  logOut() async {
+    setState(() {
+      isLogoutLoading = true;
+    });
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => LoginView()));
+    setState(() {
+      isLogoutLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text('Home'),
+      appBar: AppBar(
+        backgroundColor: Colors.blue.shade900,
+        title: Text(
+          'hello',
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                logOut();
+              },
+              icon: isLogoutLoading
+                  ? CircularProgressIndicator()
+                  : Icon(
+                      Icons.exit_to_app,
+                      color: Colors.white,
+                    ))
+        ],
+      ),
+      body: Container(
+        width: double.infinity,
+        color: Colors.blue.shade900,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Total Balance',
+              style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  height: 1.2,
+                  fontWeight: FontWeight.w600),
+            ),
+            Text(
+              'MZN 158000',
+              style: TextStyle(
+                  fontSize: 44,
+                  color: Colors.white,
+                  height: 1.2,
+                  fontWeight: FontWeight.w600),
+            ),
+            CardOne(),
+            SizedBox(
+              width: 10,
+            ),
+            CardOne(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class CardOne extends StatelessWidget {
+  const CardOne({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        color: Colors.red,
+        child: Row(
+          children: [
+            Column(
+              children: [Text('Credit'), Text('MZN 12000')],
+            )
+          ],
+        ),
+      ),
     );
   }
 }
