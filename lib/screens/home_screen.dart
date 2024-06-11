@@ -2,8 +2,8 @@ import 'package:expense_tracker/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-//ignore_for_file: prefer_const_constructors
-//ignore_for_file: prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
@@ -54,43 +54,71 @@ class _HomeScreenState extends State<HomeScreen> {
         width: double.infinity,
         color: Colors.blue.shade900,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Total Balance',
-              style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                  height: 1.2,
-                  fontWeight: FontWeight.w600),
-            ),
-            Text(
-              'MZN 15600',
-              style: TextStyle(
-                  fontSize: 44,
-                  color: Colors.white,
-                  height: 1.2,
-                  fontWeight: FontWeight.w600),
-            ),
-            Container(
-              color: Colors.white,
-              child: Row(
-                children: [
-                  CardOne(
-                    color: Colors.green,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  CardOne(
-                    color: Colors.red,
-                  )
-                ],
-              ),
-            ),
+            HeroCard(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class HeroCard extends StatelessWidget {
+  const HeroCard({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Total Balance',
+                style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    height: 1.2,
+                    fontWeight: FontWeight.w600),
+              ),
+              Text(
+                'MZN 15600',
+                style: TextStyle(
+                    fontSize: 44,
+                    color: Colors.white,
+                    height: 1.2,
+                    fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.only(top: 30, bottom: 10, left: 10, right: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+            color: Colors.white,
+          ),
+          child: Row(
+            children: [
+              CardOne(
+                color: Colors.green,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              CardOne(
+                color: Colors.red,
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -101,17 +129,29 @@ class CardOne extends StatelessWidget {
     required this.color,
   });
   final Color color;
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        color: color.withOpacity(0.2),
-        child: Row(
-          children: [
-            Column(
-              children: [Text('Credit'), Text('MZN 12000')],
-            )
-          ],
+        decoration: BoxDecoration(
+            color: color.withOpacity(0.1),
+            borderRadius: BorderRadius.circular(10)),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Credit',
+                style: TextStyle(color: color, fontSize: 30),
+              ),
+              Text(
+                'MZN 12000',
+                style: TextStyle(color: color, fontSize: 30),
+              ),
+            ],
+          ),
         ),
       ),
     );
