@@ -65,18 +65,29 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontWeight: FontWeight.w600),
             ),
             Text(
-              'MZN 158000',
+              'MZN 15600',
               style: TextStyle(
                   fontSize: 44,
                   color: Colors.white,
                   height: 1.2,
                   fontWeight: FontWeight.w600),
             ),
-            CardOne(),
-            SizedBox(
-              width: 10,
+            Container(
+              color: Colors.white,
+              child: Row(
+                children: [
+                  CardOne(
+                    color: Colors.green,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  CardOne(
+                    color: Colors.red,
+                  )
+                ],
+              ),
             ),
-            CardOne(),
           ],
         ),
       ),
@@ -87,13 +98,14 @@ class _HomeScreenState extends State<HomeScreen> {
 class CardOne extends StatelessWidget {
   const CardOne({
     super.key,
+    required this.color,
   });
-
+  final Color color;
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        color: Colors.red,
+        color: color.withOpacity(0.2),
         child: Row(
           children: [
             Column(
